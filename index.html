@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Explainable Liver Disease Classification System
+    </title>
+
+    <!-- Google Font Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+<!-- ==============================
+     HALAMAN INPUT DATA PASIEN
+================================ -->
+
+<div class="form-page" id="formPage">
+
+
+    <div class="header">
+
+        <h1>
+            Explainable Liver Disease Classification System
+        </h1>
+
+        <p>
+            Sistem klasifikasi penyakit hati menggunakan XGBoost
+            dengan interpretasi SHAP.
+        </p>
+
+    </div>
+
+
+
+    <div class="alert">
+
+        <div class="alert-icon">
+            ℹ
+        </div>
+
+        <div class="alert-text">
+            Data akan diproses menggunakan model machine learning
+            XGBoost untuk menghasilkan prediksi penyakit hati.
+        </div>
+
+    </div>
+
+
+
+
+<form id="predictionForm">
+
+
+<!-- INFORMASI PASIEN -->
+
+<div class="form-section">
+
+
+<div class="section-title">
+
+    <div class="section-icon">
+        👤
+    </div>
+
+    Informasi Pasien
+
+</div>
+
+
+
+<div class="form-row">
+
+
+<div class="form-group">
+
+<label>
+Usia (Tahun)
+</label>
+
+
+<div class="input-wrapper">
+
+<span class="input-icon">
+📅
+</span>
+
+<input 
+type="number"
+name="age"
+placeholder="Contoh: 45"
+min="0"
+max="120"
+required
+>
+
+</div>
+
+</div>
+
+
+
+
+<div class="form-group">
+
+<label>
+Jenis Kelamin
+</label>
+
+
+<div class="input-wrapper">
+
+<span class="input-icon">
+⚧
+</span>
+
+
+<select name="gender" required>
+
+<option value="">
+Pilih Jenis Kelamin
+</option>
+
+<option value="male">
+Laki-laki
+</option>
+
+<option value="female">
+Perempuan
+</option>
+
+
+</select>
+
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+
+
+<!-- PARAMETER LABORATORIUM -->
+
+
+<div class="form-section">
+
+
+<div class="section-title">
+
+
+<div class="section-icon">
+🔬
+</div>
+
+
+Parameter Laboratorium
+
+
+</div>
+
+
+
+
+<div class="lab-parameters">
+
+
+
+<!-- Total Bilirubin -->
+
+<div class="form-group">
+
+<label>
+Total Bilirubin (mg/dL)
+</label>
+
+
+<div class="input-wrapper">
+
+<span class="input-icon">
+💧
+</span>
+
+<input 
+type="number"
+name="totalBilirubin"
+placeholder="mg/dL"
+step="0.1"
+min="0"
+required
+>
+
+</div>
+
+</div>
+
+
+
+
+<!-- Direct Bilirubin -->
+
+<div class="form-group">
+
+<label>
+Direct Bilirubin (mg/dL)
+</label>
+
+
+<div class="input-wrapper">
+
+<span class="input-icon">
+💧
+</span>
+
+
+<input 
+type="number"
+name="directBilirubin"
+placeholder="mg/dL"
+step="0.1"
+min="0"
+required
+>
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="form-group">
+
+<label>
+Alkaline Phosphatase (U/L)
+</label>
+
+
+<div class="input-wrapper">
+
+<span class="input-icon">
+⚗️
+</span>
+
+
+<input 
+type="number"
+name="alkPhos"
+placeholder="U/L"
+step="0.1"
+min="0"
+required
+>
+
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="form-group">
+
+<label>
+ALT (SGPT) (U/L)
+</label>
+
+
+<div class="input-wrapper">
+
+<span class="input-icon">
+⚗️
+</span>
+
+
+<input 
+type="number"
+name="alt"
+placeholder="U/L"
+step="0.1"
+min="0"
+required
+>
+
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="form-group">
+
+<label>
+AST (SGOT) (U/L)
+</label>
+
+
+<div class="input-wrapper">
+
+<span class="input-icon">
+⚗️
+</span>
+
+
+<input 
+type="number"
+name="ast"
+placeholder="U/L"
+step="0.1"
+min="0"
+required
+>
+
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="form-group">
+
+<label>
+Total Protein (g/dL)
+</label>
+
+
+<div class="input-wrapper">
+
+<span class="input-icon">
+🧬
+</span>
+
+
+<input 
+type="number"
+name="totalProtein"
+placeholder="g/dL"
+step="0.1"
+min="0"
+required
+>
+
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="form-group">
+
+<label>
+Albumin (g/dL)
+</label>
+
+
+<div class="input-wrapper">
+
+<span class="input-icon">
+🧬
+</span>
+
+
+<input 
+type="number"
+name="albumin"
+placeholder="g/dL"
+step="0.1"
+min="0"
+required
+>
+
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="form-group">
+
+<label>
+A/G Ratio
+</label>
+
+
+<div class="input-wrapper">
+
+<span class="input-icon">
+📊
+</span>
+
+
+<input 
+type="number"
+name="agRatio"
+placeholder="Rasio"
+step="0.01"
+min="0"
+required
+>
+
+
+</div>
+
+</div>
+
+
+
+
+</div>
+
+</div>
+
+
+
+
+
+
+<!-- BUTTON -->
+
+
+<div class="button-group">
+
+
+<button 
+type="reset"
+class="btn-secondary"
+>
+Reset Data
+</button>
+
+
+
+<button 
+type="submit"
+class="btn-primary"
+>
+🔍 Prediksi Penyakit Hati
+</button>
+
+
+
+</div>
+
+
+
+</form>
+
+
+
+
+
+<!-- FOOTER -->
+
+
+<div class="footer">
+
+
+<div class="badge">
+🔒 Privacy Guaranteed
+</div>
+
+
+<div class="badge">
+⚡ XGBoost Optimized
+</div>
+
+
+<div class="badge">
+👁 Explainable SHAP
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- ==============================
+     HALAMAN HASIL PREDIKSI
+================================ -->
+
+
+<div class="result-page" id="resultPage">
+
+
+
+<div class="result-header">
+
+
+<h1>
+Hasil Prediksi
+</h1>
+
+
+<p>
+Analisis menggunakan XGBoost dan interpretasi SHAP
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="prediction-result">
+
+
+<div class="prediction-label">
+Hasil Klasifikasi
+</div>
+
+
+<div 
+class="prediction-value"
+id="resultPrediction"
+>
+Normal
+</div>
+
+
+
+<div class="confidence-bar">
+
+
+<div 
+class="confidence-fill"
+id="confidenceFill"
+>
+</div>
+
+
+</div>
+
+
+
+
+<div class="prediction-confidence">
+
+Confidence:
+<span id="confidenceScore">
+0
+</span>
+%
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="result-sections">
+
+
+
+<div class="result-card">
+
+<h3>
+📋 Informasi Pasien
+</h3>
+
+
+<div 
+class="patient-info-grid"
+id="patientInfoGrid"
+>
+
+</div>
+
+
+</div>
+
+
+
+<div class="result-card">
+
+<h3>
+🔍 Kontribusi Parameter Laboratorium (SHAP)
+</h3>
+
+
+<div 
+class="shap-values"
+id="shapValues"
+>
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="result-card">
+
+<h3>
+💡 Insight Klinis
+</h3>
+
+
+<div 
+id="clinicalInsights"
+class="clinical-text"
+>
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+<div class="result-actions">
+
+
+<button 
+class="btn-back"
+onclick="backToForm()"
+>
+← Kembali
+</button>
+
+
+
+<button 
+class="btn-download"
+onclick="downloadResult()"
+>
+⬇ Download Hasil
+</button>
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+<!-- JAVASCRIPT -->
+
+<script src="script.js"></script>
+
+
+</body>
+</html>
